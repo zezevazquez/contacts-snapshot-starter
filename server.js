@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const database = require('./database')
 const app = express()
 const {renderError} = require('./server/utils')
+const contacts = require('./server/routes/contacts')
 
 app.set('view engine', 'ejs');
 
@@ -20,6 +21,8 @@ app.get('/', (request, response) => {
     response.render('index', { contacts })
   })
 })
+
+app.use('/contacts', contacts)
 
 app.use((request, response) => {
   response.render('not_found')

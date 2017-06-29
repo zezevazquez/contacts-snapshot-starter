@@ -1,19 +1,21 @@
-const database = require('./database')
-const router = require('express-router')
+const express = require('express')
+const database = require('../../database')
 const {renderError} = require('../utils')
 
-router.get('/contacts/new', (request, response) => {
+const router = express.Router()
+
+router.get('/new', (request, response) => {
   response.render('new')
 })
 
-router.post('/contacts', (request, response) => {
+router.post('/', (request, response) => {
   database.createContact(request.body, function(error, contact){
     if (error) return renderError(error, response, response)
     response.redirect(`/contacts/${contact.id}`)
   })
 })
 
-router.get('/contacts/:contactId', (request, response, next) => {
+router.get('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
   if (!contactId || !/^\d+$/.test(contactId)) return next()
   database.getContact(contactId, function(error, contact){
@@ -24,7 +26,7 @@ router.get('/contacts/:contactId', (request, response, next) => {
 })
 
 
-router.get('/contacts/:contactId/delete', (request, response) => {
+router.get('/:contactId/delete', (request, response) => {
   const contactId = request.params.contactId
   database.deleteContact(contactId, function(error){
     if (error) return renderError(error, response, response)
@@ -39,3 +41,5 @@ router.get('/search', (request, response) => {
     response.render('index', { query, contacts })
   })
 })
+
+module.exports = router
