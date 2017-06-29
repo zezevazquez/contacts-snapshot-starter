@@ -9,37 +9,44 @@ router.get('/new', (request, response) => {
 })
 
 router.post('/', (request, response) => {
-  database.createContact(request.body, function(error, contact){
-    if (error) return renderError(error, response, response)
-    response.redirect(`/contacts/${contact.id}`)
-  })
+  database.createContact(request.body)
+    .then(function(contact) {
+      if (contact) return response.redirect(`/contacts/${contact[0].id}`)
+      next()
+    })
+    .catch( error => renderError(error, response, response) )
 })
 
 router.get('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
   if (!contactId || !/^\d+$/.test(contactId)) return next()
-  database.getContact(contactId, function(error, contact){
-    if (error) return renderError(error, response, response)
-    if (contact) return response.render('show', { contact })
-    next()
-  })
+  database.getContact(contactId)
+    .then(function(contact) {
+      if (contact) return response.render('show', { contact })
+      next()
+    })
+    .catch( error => renderError(error, response, response) )
 })
 
 
 router.get('/:contactId/delete', (request, response) => {
   const contactId = request.params.contactId
-  database.deleteContact(contactId, function(error){
-    if (error) return renderError(error, response, response)
-    response.redirect('/')
-  })
+  database.deleteContact(contactId)
+    .then(function(contact) {
+      if (contact) return response.redirect('/')
+      next()
+    })
+    .catch( error => renderError(error, response, response) )
 })
 
 router.get('/search', (request, response) => {
   const query = request.query.q
-  database.searchForContact(query, function(error, contacts){
-    if (error) return renderError(error, response, response)
-    response.render('index', { query, contacts })
-  })
+  database.searchForContact(query)
+    .then(function(contacts) {
+      if (contacts) return response.render('index', { query, contacts })
+      next()
+    })
+    .catch( error => renderError(error, response, response) )
 })
 
 module.exports = router

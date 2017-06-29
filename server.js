@@ -16,10 +16,9 @@ app.use((request, response, next) => {
 
 
 app.get('/', (request, response) => {
-  database.getContacts(function(error, contacts){
-    if (error) return renderError(error, response, response)
-    response.render('index', { contacts })
-  })
+  const contacts = database.getContacts()
+  .then((contacts) => {response.render('index', { contacts })})
+  .catch( err => console.log('err', err) )
 })
 
 app.use('/contacts', contacts)
