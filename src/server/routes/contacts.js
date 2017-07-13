@@ -1,5 +1,5 @@
 const express = require('express')
-const database = require('../../database')
+const DbContacts = require('../../db/contacts')
 const {renderError} = require('../utils')
 
 const router = express.Router()
@@ -8,8 +8,8 @@ router.get('/new', (request, response) => {
   response.render('new')
 })
 
-router.post('/', (request, response) => {
-  database.createContact(request.body)
+router.post('/', (request, response, next) => {
+  DbContacts.createContact(request.body)
     .then(function(contact) {
       if (contact) return response.redirect(`/contacts/${contact[0].id}`)
       next()
@@ -20,7 +20,7 @@ router.post('/', (request, response) => {
 router.get('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
   if (!contactId || !/^\d+$/.test(contactId)) return next()
-  database.getContact(contactId)
+  DbContacts.getContact(contactId)
     .then(function(contact) {
       if (contact) return response.render('show', { contact })
       next()
@@ -29,9 +29,9 @@ router.get('/:contactId', (request, response, next) => {
 })
 
 
-router.get('/:contactId/delete', (request, response) => {
+router.get('/:contactId/delete', (request, response, next) => {
   const contactId = request.params.contactId
-  database.deleteContact(contactId)
+  DbContacts.deleteContact(contactId)
     .then(function(contact) {
       if (contact) return response.redirect('/')
       next()
@@ -39,9 +39,9 @@ router.get('/:contactId/delete', (request, response) => {
     .catch( error => renderError(error, response, response) )
 })
 
-router.get('/search', (request, response) => {
+router.get('/search', (request, response, next) => {
   const query = request.query.q
-  database.searchForContact(query)
+  DbContacts.searchForContact(query)
     .then(function(contacts) {
       if (contacts) return response.render('index', { query, contacts })
       next()
