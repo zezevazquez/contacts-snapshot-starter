@@ -1,8 +1,8 @@
-const express = require('express')
+var initRequires = require('.');
 const DbContacts = require('../../db/contacts')
 const {renderError} = require('../utils')
 
-const router = express.Router()
+const router = require('express').Router()
 
 router.get('/new', (request, response) => {
   response.render('new')

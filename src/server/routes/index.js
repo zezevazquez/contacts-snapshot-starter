@@ -8,6 +8,6 @@ router.get('/', (request, response) => {
     .catch( err => console.log('err', err) )
 })
 
-router.use('/contacts', contacts);
+router.use('/contacts', contacts); // /contacts/search
 
 module.exports = router;

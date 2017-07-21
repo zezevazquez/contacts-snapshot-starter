@@ -1,6 +1,6 @@
 const db = require('./db')
 
-const createContact = function(contact, callback){
+const createContact = function(contact){
   return db.query(`
     INSERT INTO
       contacts (first_name, last_name)
@@ -13,7 +13,6 @@ const createContact = function(contact, callback){
       contact.first_name,
       contact.last_name,
     ])
-    .then(data => data)
     .catch(error => error);
 }
 
@@ -24,7 +23,6 @@ const getContacts = function(){
     FROM
       contacts
     `, [])
-    .then(data => data)
     .catch(error => error);
 }
 
@@ -33,7 +31,6 @@ const getContact = function(contactId){
     SELECT * FROM contacts WHERE id=$1::int LIMIT 1
     `,
     [contactId])
-    .then(data => data)
     .catch(error => error);
 }
 
@@ -45,7 +42,6 @@ const deleteContact = function(contactId){
       id=$1::int
     `,
     [contactId])
-    .then(data => data)
     .catch(error => error);
 }
 
@@ -59,7 +55,6 @@ const searchForContact = function(searchQuery){
       lower(first_name || ' ' || last_name) LIKE $1::text
     `,
     [`%${searchQuery.toLowerCase().replace(/\s+/,'%')}%`])
-    .then(data => data)
     .catch(error => error);
 }
 
@@ -68,5 +63,5 @@ module.exports = {
   getContacts,
   getContact,
   deleteContact,
-  searchForContact,
+  searchForContact
 }
