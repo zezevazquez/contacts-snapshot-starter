@@ -1,4 +1,3 @@
-var initRequires = require('.');
 const DbContacts = require('../../db/contacts')
 const {renderError} = require('../utils')
 
