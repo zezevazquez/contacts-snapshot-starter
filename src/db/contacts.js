@@ -58,6 +58,10 @@ const searchForContact = function(searchQuery){
     .catch(error => error);
 }
 
+const loginUser = () => {
+  
+}
+
 module.exports = {
   createContact,
   getContacts,
