@@ -4,6 +4,10 @@ const {renderError} = require('../utils')
 const router = require('express').Router()
 
 router.get('/new', (request, response) => {
+
+  if (!request.session.cookies) {
+    response.render('signup')
+  }
   response.render('new')
 })
 
