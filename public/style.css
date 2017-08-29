@@ -98,3 +98,42 @@ nav .search-form input {
   color: red;
   font-weight: bold;
 }
+
+/* New User Forms*/
+.new-user-form label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.new-user-form label > span {
+  display: inline-block;
+  min-width: 8em;
+}
+
+.new-user-form input[type="submit"] {
+  margin-top: 1em;
+}
+
+.new-user-form-errors {
+  color: red;
+  font-weight: bold;
+}
+/*Existing User Form*/
+.existing-user-form label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.existing-user-form label > span {
+  display: inline-block;
+  min-width: 8em;
+}
+
+.existing-user-form input[type="submit"] {
+  margin-top: 1em;
+}
+
+.existing-user-form-errors {
+  color: red;
+  font-weight: bold;
+}
