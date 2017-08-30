@@ -1,6 +1,7 @@
 const db = require('./db')
 
-const createUser = (email, password) => {
+const create = (email, password) => {
+  console.log('userinfo inside of db file:::', email, password);
   return db.query(`
     INSERT INTO
       users (email, password)
@@ -30,33 +31,30 @@ const getUser = (user) => {
 }
 
 const loginUser = (email, password) => {
+  console.log('client email:::', email, 'client password::', password);
   return db.query(`
     SELECT
       email, password
     FROM
       users
     WHERE
-      email=$1 AND
-      password=$2
+      email=$1
   `, [
-    email,
-    password
-  ])
+    email
+  ]). then(userInfo => {
+    console.log('userInfo:::', userInfo);
+    return bcrypt.comparePasswords(password, userInfo[0].password)
+    .then((res) => {
+      console.log('password comparison response::',res);
+      return res
+    })
+  })
 }
 
-const confirmPassword = (password, confirmPassword) => {
-  return (password === confirmPassword) ? true : false
-}
 
-const emailDuplicates = (error) => {
-  if (error.code == '23505') {
-    return true
-  }
-}
 
 module.exports = {
-  createUser,
+  create,
   getUser,
-  confirmPassword,
   loginUser
 }

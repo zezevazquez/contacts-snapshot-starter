@@ -1,6 +1,4 @@
-const dbUsers = require('../../db/users')
-const {renderError} = require('../utils')
-const bcrypt = require('../../db/bcrypt')
+const users = require('../../models/users')
 const router = require('express').Router()
 
 router.get('/signup', (req, res) => {
@@ -8,32 +6,26 @@ router.get('/signup', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
-  const {email, password} = req.body
+  const {email, password, confirm_password} = req.body
 
-  if (!dbUsers.confirmPassword(req.body.password, req.body.confirm_password)) {
+  if (password !== confirm_password) {
     res.render('signup', {error: 'Passwords do not match!'})
   } else {
-
-    bcrypt.hash(password)
-    .then((hashedPassword) => {
-      console.log(hashedPassword);
-      console.log(email);
-      dbUsers.createUser(email, hashedPassword)
-      .then(function(user) {
-        console.log(user);
-        if (user) {
-          req.session.name = user[0].email
-          res.redirect('/')
-        }
-      })
-      .catch(err => {
-        if (err.code === '23505') {
-          res.render('signup', {error: 'Email is in use'})
-        }
-      })
+    users.signUp(email, password)
+    .then(function(user) {
+      if (user) {
+        req.session.name = user[0].email
+        res.redirect('/')
+      }
+    })
+    .catch(err => {
+      if (err.code === '23505') {
+        res.render('signup', {error: 'Email is in use'})
+      }
     })
   }
 })
+
 
 router.get('/login', (req, res) => {
   res.render('login')
@@ -42,13 +34,14 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
   const {email, password} = req.body
   console.log(email, password);
-  bcrypt.comparePasswords()
-  dbUsers.loginUser(email, password)
+  // bcrypt.comparePasswords()
+  users.loginUser(email, password)
   .then(function(user) {
-    if (user.length === 0) {
+    console.log('user:::::::', user);
+    if (false) {
       res.render('login', {error: 'Incorrect email and/or password'})
     } else {
-      req.session.name = user[0].email
+      req.session.name = 'session'
       res.redirect('/')
     }
   })
@@ -66,7 +59,7 @@ router.get('/logout', (req,res) => {
 router.get('/:userId', (req, response, next) => {
   const userId = req.params.userId
   if (!userId || !/^\d+$/.test(userId)) return next()
-  dbUsers.getUser(userId)
+  users.getUser(userId)
     .then(function(user) {
       if (user) return response.render('show', { user })
       next()
