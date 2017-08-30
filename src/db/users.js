@@ -1,6 +1,6 @@
 const db = require('./db')
 
-const createUser = (user) => {
+const createUser = (email, password) => {
   return db.query(`
     INSERT INTO
       users (email, password)
@@ -10,8 +10,8 @@ const createUser = (user) => {
       *
   `,
   [
-    user.email,
-    user.password
+    email,
+    password
   ])
   // .catch(error => error.code)
 }
@@ -24,8 +24,8 @@ const getUser = (user) => {
       users
     WHERE id=$1::int LIMIT 1
   `, [
-    user.email,
-    user.password
+    email,
+    password
   ])
 }
 

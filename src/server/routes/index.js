@@ -4,12 +4,11 @@ const users = require('./users')
 const DbContacts = require('../../db/contacts');
 
 router.get('/', (req, res) => {
-  console.log('reqSession inside of index file::', req.session.name);
   if(!req.session.name) {
-    res.redirect('/users/signup')
+    res.redirect('/users/login')
   } else {
     DbContacts.getContacts()
-    .then((contacts) => {res.render('index', { contacts })})
+    .then((contacts) => {res.render('index', { contacts, user: req.session.name })})
     .catch( err => console.log('err', err) )
   }
 })

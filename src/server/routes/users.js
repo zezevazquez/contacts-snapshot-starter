@@ -1,7 +1,6 @@
 const dbUsers = require('../../db/users')
 const {renderError} = require('../utils')
-const expressSession = require('express-session')
-
+const bcrypt = require('../../db/bcrypt')
 const router = require('express').Router()
 
 router.get('/signup', (req, res) => {
@@ -9,25 +8,29 @@ router.get('/signup', (req, res) => {
 })
 
 router.post('/signup', (req, res) => {
+  const {email, password} = req.body
 
   if (!dbUsers.confirmPassword(req.body.password, req.body.confirm_password)) {
     res.render('signup', {error: 'Passwords do not match!'})
   } else {
-    dbUsers.createUser(req.body)
-    .then(function(user) {
-      console.log(user);
-      if (user) {
-        req.session.name = user[0].email
-        console.log('user email:::', user[0].email);
-        console.log('login post stuff::',req.session.name.email);
-        console.log('sessions:::', req.session);
-        return res.redirect('/')
-      }
-    })
-    .catch(err => {
-      if (err.code === '23505') {
-        res.render('signup', {error: 'Email is in use'})
-      }
+
+    bcrypt.hash(password)
+    .then((hashedPassword) => {
+      console.log(hashedPassword);
+      console.log(email);
+      dbUsers.createUser(email, hashedPassword)
+      .then(function(user) {
+        console.log(user);
+        if (user) {
+          req.session.name = user[0].email
+          res.redirect('/')
+        }
+      })
+      .catch(err => {
+        if (err.code === '23505') {
+          res.render('signup', {error: 'Email is in use'})
+        }
+      })
     })
   }
 })
@@ -39,6 +42,7 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
   const {email, password} = req.body
   console.log(email, password);
+  bcrypt.comparePasswords()
   dbUsers.loginUser(email, password)
   .then(function(user) {
     if (user.length === 0) {
@@ -52,6 +56,11 @@ router.post('/login', (req, res) => {
     console.log('Logging error::', err)
   })
   // res.render('login')
+})
+
+router.get('/logout', (req,res) => {
+  req.session.name = null
+  res.redirect('/')
 })
 
 router.get('/:userId', (req, response, next) => {
