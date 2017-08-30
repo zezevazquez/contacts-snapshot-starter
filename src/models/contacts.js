@@ -9,7 +9,7 @@ const getAllContacts = () => {
 }
 
 const getSingleContact = (contact) => {
-  return DbContacts.getSingle()
+  return DbContacts.getSingle(contact)
 }
 
 const deleteContact = (contactId) => {
@@ -17,7 +17,7 @@ const deleteContact = (contactId) => {
 }
 
 const searchForContact = (searchQuery) => {
-  return DbContacts.searchByName
+  return DbContacts.searchByName(searchQuery)
 }
 
 module.exports = {

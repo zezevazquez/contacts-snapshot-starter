@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const dbContacts = require('./models/db/contacts')
 const expressSession = require('express-session')
 const app = express()
-const {renderError} = require('./server/utils')
+const {renderError, confirmSession} = require('./server/utils')
 const routes = require('./server/routes');
 
 app.set('view engine', 'ejs');
@@ -26,6 +26,8 @@ app.use(expressSession({
     expires: 600000
     }
 }))
+
+app.use('/contacts', confirmSession)
 
 app.use('/', routes)
 

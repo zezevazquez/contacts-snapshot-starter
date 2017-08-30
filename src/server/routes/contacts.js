@@ -1,18 +1,15 @@
-const DbContacts = require('../../models/db/contacts')
+const CONTACTS = require('../../models/contacts')
 const {renderError} = require('../utils')
 
 const router = require('express').Router()
 
 router.get('/new', (request, response) => {
-
-  if (!request.session.cookies) {
-    response.render('signup')
-  }
   response.render('new')
 })
 
 router.post('/', (request, response, next) => {
-  DbContacts.createContact(request.body)
+  console.log('someshit::::', CONTACTS);
+  CONTACTS.createContact(request.body)
     .then(function(contact) {
       if (contact) return response.redirect(`/contacts/${contact[0].id}`)
       next()
@@ -23,8 +20,9 @@ router.post('/', (request, response, next) => {
 router.get('/:contactId', (request, response, next) => {
   const contactId = request.params.contactId
   if (!contactId || !/^\d+$/.test(contactId)) return next()
-  DbContacts.getContact(contactId)
+  CONTACTS.getSingleContact(contactId)
     .then(function(contact) {
+      console.log('wtf is contacts here?!?!!?!?', contact);
       if (contact) return response.render('show', { contact })
       next()
     })
@@ -34,7 +32,7 @@ router.get('/:contactId', (request, response, next) => {
 
 router.get('/:contactId/delete', (request, response, next) => {
   const contactId = request.params.contactId
-  DbContacts.deleteContact(contactId)
+  CONTACTS.deleteContact(contactId)
     .then(function(contact) {
       if (contact) return response.redirect('/')
       next()
@@ -44,7 +42,8 @@ router.get('/:contactId/delete', (request, response, next) => {
 
 router.get('/search', (request, response, next) => {
   const query = request.query.q
-  DbContacts.searchForContact(query)
+  console.log('MY QUERY!!!!!', query);
+  CONTACTS.searchForContact(query)
     .then(function(contacts) {
       if (contacts) return response.render('index', { query, contacts })
       next()
