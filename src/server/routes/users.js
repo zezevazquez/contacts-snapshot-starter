@@ -26,19 +26,18 @@ router.post('/signup', (req, res) => {
   }
 })
 
-
 router.get('/login', (req, res) => {
   res.render('login')
 })
 
 router.post('/login', (req, res) => {
   const {email, password} = req.body
-  console.log(email, password);
-  // bcrypt.comparePasswords()
+  console.log('email:::', email, '  password::::', password);
+
   users.loginUser(email, password)
   .then(function(user) {
-    console.log('user:::::::', user);
-    if (false) {
+    console.log(user, '::: is the user info from models');
+    if (user === false || user.validLogin === false) {
       res.render('login', {error: 'Incorrect email and/or password'})
     } else {
       req.session.name = 'session'

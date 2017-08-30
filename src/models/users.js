@@ -8,8 +8,27 @@ const signUp = (email, password) => {
   })
 }
 
-const getAllUsers = () => {
-  return DbUsers.getAll()
+const loginUser = (email, password) => {
+  return DbUsers.findUserByEmail(email)
+    .then(userInfo => {
+      console.log('YOOO userinfo!!!!', userInfo);
+      if (userInfo.length === 0) {
+        return false
+      } else {
+        console.log('logging length::::', userInfo.length);
+        console.log('USERINFO::::', userInfo);
+        return bcrypt.comparePasswords(password, userInfo[0].password)
+        .then((res) => {
+          console.log('password comparison response::',res);
+          return dbResponse = {
+            name: userInfo[0].password,
+            validLogin:res
+          }
+        })
+
+      }
+      console.log('userInfo:::', userInfo);
+  })
 }
 
 const getSingleUser = (contact) => {
@@ -36,7 +55,7 @@ const emailDuplicates = (error) => {
 
 module.exports = {
   signUp,
-  getAllUsers,
+  loginUser,
   getSingleUser,
   deleteUser,
   searchForUser,

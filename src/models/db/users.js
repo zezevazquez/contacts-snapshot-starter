@@ -30,8 +30,7 @@ const getUser = (user) => {
   ])
 }
 
-const loginUser = (email, password) => {
-  console.log('client email:::', email, 'client password::', password);
+const findUserByEmail = (email) => {
   return db.query(`
     SELECT
       email, password
@@ -41,14 +40,7 @@ const loginUser = (email, password) => {
       email=$1
   `, [
     email
-  ]). then(userInfo => {
-    console.log('userInfo:::', userInfo);
-    return bcrypt.comparePasswords(password, userInfo[0].password)
-    .then((res) => {
-      console.log('password comparison response::',res);
-      return res
-    })
-  })
+  ])
 }
 
 
@@ -56,5 +48,5 @@ const loginUser = (email, password) => {
 module.exports = {
   create,
   getUser,
-  loginUser
+  findUserByEmail
 }
