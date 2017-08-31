@@ -8,4 +8,5 @@ const confirmSession = (req, res, next) => {
   }
   next()
 }
+
 module.exports = {renderError, confirmSession}
