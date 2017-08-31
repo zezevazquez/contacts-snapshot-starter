@@ -4,14 +4,11 @@ const path = require('path')
 const dbContacts = require('./models/db/contacts')
 const expressSession = require('express-session')
 const app = express()
-const {renderError, confirmSession} = require('./server/utils')
+const {renderError} = require('./server/utils')
 const routes = require('./server/routes');
 
 app.set('view engine', 'ejs');
-app.set('views', [
-  path.join(__dirname ,'/views'),
-  path.join(__dirname ,'/views/pages'),
-  path.join(__dirname ,'/views/partials')])
+app.set('views', __dirname + '/views/pages')
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -30,13 +27,7 @@ app.use(expressSession({
     }
 }))
 
-app.use('/contacts', confirmSession)
-
 app.use('/', routes)
-
-app.use((request, response) => {
-  response.render('not_found')
-})
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {

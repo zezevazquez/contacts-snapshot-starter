@@ -7,9 +7,14 @@ const signUp = (email, password, role) => {
   } else {
     role = 'regular'
   }
-  return bcrypt.hash(password).then(hashedPassword => {
-    return users.create(email, hashedPassword, role)
-  })
+    return hashPassword(password).then(hashedPassword => {
+      return users.create(email, hashedPassword, role)
+    })
+  }
+
+
+const hashPassword = (password) => {
+  return bcrypt.hash(password)
 }
 
 const loginUser = (email, password) => {
@@ -19,13 +24,6 @@ const loginUser = (email, password) => {
         return false
       } else {
         return bcrypt.comparePasswords(password, userInfo[0].password)
-        .then((res) => {
-          console.log('password comparison response::',res);
-          return dbResponse = {
-            name: userInfo[0].password,
-            validLogin:res
-          }
-        })
       }
     })
 }

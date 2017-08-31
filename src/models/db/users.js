@@ -44,8 +44,6 @@ const findUserByEmail = (email) => {
   ])
 }
 
-
-
 module.exports = {
   create,
   getUser,

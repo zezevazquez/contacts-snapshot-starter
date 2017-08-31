@@ -9,13 +9,13 @@ router.post('/signup', (req, res) => {
   const {email, password, confirm_password} = req.body
 
   if (password !== confirm_password) {
-    res.render('signup', {error: 'Passwords do not match!'})
+    res.status(401).render('signup', {error: 'Passwords do not match!'})
   } else {
     users.signUp(email, password)
     .then(function(user) {
       if (user) {
         req.session.name = user[0].email
-        res.redirect('/')
+        res.status(200).redirect('/')
       }
     })
     .catch(err => {
@@ -38,16 +38,15 @@ router.post('/login', (req, res) => {
   .then(function(user) {
     console.log(user, '::: is the user info from models');
     if (user === false || user.validLogin === false) {
-      res.render('login', {error: 'Incorrect email and/or password'})
+      res.status(401).render('login', {error: 'Incorrect email and/or password'})
     } else {
       req.session.name = 'session'
-      res.redirect('/')
+      res.status(200).redirect('/')
     }
   })
   .catch(err => {
     console.log('Logging error::', err)
   })
-  // res.render('login')
 })
 
 router.get('/logout', (req,res) => {

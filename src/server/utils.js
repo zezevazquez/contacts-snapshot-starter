@@ -3,6 +3,7 @@ const renderError = function(error, response, response){
 }
 
 const confirmSession = (req, res, next) => {
+  console.log('yadddadadda:::::', req.session.name);
   if (!req.session.name) {
     res.render('login')
   }
