@@ -7,7 +7,6 @@ const signUp = (email, password, admin) => {
   } else {
     admin = 'false'
   }
-  console.log(email);
   return bcrypt.hash(password).then(hashedPassword => {
     return users.create(email, hashedPassword, admin)
   })
@@ -31,18 +30,6 @@ const loginUser = (email, password) => {
     })
 }
 
-const getSingleUser = (contact) => {
-  return users.getSingle()
-}
-
-const deleteUser = (contactId) => {
-  return users.deleteSingle(contactId)
-}
-
-const searchForUser = (searchQuery) => {
-  return users.searchByName
-}
-
 const confirmPassword = (password, confirmPassword) => {
   return (password === confirmPassword) ? true : false
 }
@@ -56,9 +43,6 @@ const emailDuplicates = (error) => {
 module.exports = {
   signUp,
   loginUser,
-  getSingleUser,
-  deleteUser,
-  searchForUser,
   confirmPassword,
   emailDuplicates
 }

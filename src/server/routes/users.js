@@ -55,15 +55,4 @@ router.get('/logout', (req,res) => {
   res.redirect('/')
 })
 
-router.get('/:userId', (req, response, next) => {
-  const userId = req.params.userId
-  if (!userId || !/^\d+$/.test(userId)) return next()
-  users.getUser(userId)
-    .then(function(user) {
-      if (user) return response.render('show', { user })
-      next()
-    })
-    .catch( error => renderError(error, response, response) )
-})
-
 module.exports = router
