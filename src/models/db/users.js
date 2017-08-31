@@ -1,19 +1,19 @@
 const db = require('./db')
 
-const create = (email, password, admin) => {
-  console.log('userinfo inside of db file:::', email, password, admin);
+const create = (email, password, role) => {
+  console.log('userinfo inside of db file:::', email, password, role);
   return db.query(`
     INSERT INTO
-      users (email, password, admin)
+      users (email, password, role)
     VALUES
-      ($1::text, $2::text, $3::boolean)
+      ($1::text, $2::text, $3::text)
     RETURNING
       *
   `,
   [
     email,
     password,
-    admin
+    role
   ])
   // .catch(error => error.code)
 }

@@ -1,14 +1,14 @@
 const users = require('./db/users')
 const bcrypt = require('./bcrypt')
 
-const signUp = (email, password, admin) => {
+const signUp = (email, password, role) => {
   if (email.includes('.admin')) {
-    admin = 'true'
+    role = 'admin'
   } else {
-    admin = 'false'
+    role = 'regular'
   }
   return bcrypt.hash(password).then(hashedPassword => {
-    return users.create(email, hashedPassword, admin)
+    return users.create(email, hashedPassword, role)
   })
 }
 
