@@ -12,5 +12,5 @@ CREATE TABLE users (
   email VARCHAR(255) NOT NULL UNIQUE,
   -- does this UNIQQUE shit work? ^^
   password VARCHAR(255) NOT NULL,
-  admin BOOLEAN
+  admin VARCHAR(255) NOT NULL
 );

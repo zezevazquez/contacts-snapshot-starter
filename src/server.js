@@ -11,7 +11,7 @@ app.set('view engine', 'ejs');
 app.set('views', [
   path.join(__dirname ,'/views'),
   path.join(__dirname ,'/views/pages'),
-  path.join(__dirname ,'/views/partials'),])
+  path.join(__dirname ,'/views/partials')])
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))

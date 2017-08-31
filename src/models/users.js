@@ -1,4 +1,4 @@
-const USERS = require('./db/users')
+const users = require('./db/users')
 const bcrypt = require('./bcrypt')
 
 const signUp = (email, password, admin) => {
@@ -9,12 +9,12 @@ const signUp = (email, password, admin) => {
   }
   console.log(email);
   return bcrypt.hash(password).then(hashedPassword => {
-    return USERS.create(email, hashedPassword, admin)
+    return users.create(email, hashedPassword, admin)
   })
 }
 
 const loginUser = (email, password) => {
-  return USERS.findUserByEmail(email)
+  return users.findUserByEmail(email)
     .then(userInfo => {
       if (userInfo.length === 0) {
         return false
@@ -32,15 +32,15 @@ const loginUser = (email, password) => {
 }
 
 const getSingleUser = (contact) => {
-  return USERS.getSingle()
+  return users.getSingle()
 }
 
 const deleteUser = (contactId) => {
-  return USERS.deleteSingle(contactId)
+  return users.deleteSingle(contactId)
 }
 
 const searchForUser = (searchQuery) => {
-  return USERS.searchByName
+  return users.searchByName
 }
 
 const confirmPassword = (password, confirmPassword) => {

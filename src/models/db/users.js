@@ -6,7 +6,7 @@ const create = (email, password, admin) => {
     INSERT INTO
       users (email, password, admin)
     VALUES
-      ($1::text, $2::text, $3::boolean)
+      ($1::text, $2::text, $3::text)
     RETURNING
       *
   `,
