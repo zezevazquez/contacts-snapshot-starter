@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const path = require('path')
 const dbContacts = require('./models/db/contacts')
 const expressSession = require('express-session')
 const app = express()
@@ -7,7 +8,10 @@ const {renderError, confirmSession} = require('./server/utils')
 const routes = require('./server/routes');
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views')
+app.set('views', [
+  path.join(__dirname ,'/views'),
+  path.join(__dirname ,'/views/pages'),
+  path.join(__dirname ,'/views/partials'),])
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))

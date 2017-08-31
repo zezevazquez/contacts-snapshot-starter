@@ -1,4 +1,4 @@
-<%- include header.ejs %>
+<%- include partials/header.ejs %>
 
   <h1>SignUp Page</h1>
 
@@ -16,9 +16,11 @@
       <span>Confirm Password</span>
       <input type="text" name="confirm_password" />
     </label>
+    <label class="radio-inline"><input type="radio" name="optradio" value="1">Regular</label>
+    <label class="radio-inline"><input type="radio" name="optradio" value="0">Admin</label>
     <input type="submit" value="SignUp">
   </form>
   <h5><%=error%></h5>
 
-  
-<%- include footer.ejs %>
+
+<%- include partials/footer.ejs %>
