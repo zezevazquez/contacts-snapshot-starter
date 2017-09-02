@@ -1,0 +1,19 @@
+<%- include ../partials/header.ejs %>
+
+  <h1>Login Page</h1>
+
+  <form method="post" action="/users/login" class="existing-user-form">
+    <pre class="existing-user-form-errors"></pre>
+    <label>
+      <span>Email</span>
+      <input type="text" name="email" />
+    </label>
+    <label>
+      <span>Password</span>
+      <input type="text" name="password" />
+    </label>
+    <input type="submit" value="Login">
+  </form>
+  <h5><%=error%></h5>
+
+<%- include ../partials/footer.ejs %>

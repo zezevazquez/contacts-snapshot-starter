@@ -1,0 +1,24 @@
+<%- include ../partials/header.ejs %>
+
+  <h1>SignUp Page</h1>
+
+  <form method="post" action="/users/signup" class="new-user-form">
+    <pre class="new-user-form-errors"></pre>
+    <label>
+      <span>Email</span>
+      <input type="text" name="email" />
+    </label>
+    <label>
+      <span>Password</span>
+      <input type="text" name="password" />
+    </label>
+    <label>
+      <span>Confirm Password</span>
+      <input type="text" name="confirm_password" />
+    </label>
+    <input type="submit" value="SignUp">
+  </form>
+  <h5><%=error%></h5>
+
+
+<%- include ../partials/footer.ejs %>

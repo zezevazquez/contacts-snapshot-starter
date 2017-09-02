@@ -1,20 +1,13 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-const dbContacts = require('./db/contacts')
-const app = express()
-const {renderError} = require('./server/utils')
 const routes = require('./server/routes');
+const middleware = require('./server/middleware')
+
+const app = express()
 
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views')
+app.set('views', __dirname + '/views/pages')
 
-app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use((request, response, next) => {
-  response.locals.query = ''
-  next()
-})
-
+app.use('/', middleware)
 app.use('/', routes)
 
 app.use((request, response) => {
